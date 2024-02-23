@@ -430,6 +430,9 @@ interface Api {
     @GET("api/seen/bits")
     suspend fun seenBitsGet(): SeenBits
 
+    @GET("api/seen/data")
+    suspend fun seenDataGet(): SeenData
+
     @POST("api/seen/update")
     suspend fun seenBitsUpdate(
         @Header("X-pr0gramm-Nonce") nonce: Nonce?,
@@ -946,6 +949,18 @@ interface Api {
         val value: ByteArray,
         /** Current version of seen bits. */
         val version: Int,
+    )
+
+    data class SeenData (
+        /** Current version of seen bits. */
+        @retrofit2.http.Header("X-pr0gramm-Bits-Version")
+        val version: Int,
+        /** Same user ID as returned by /api/user/me. */
+        @retrofit2.http.Header("X-pr0gramm-User-Identifier")
+        val userIdentifier: String,
+        @Body
+        /** Server sends the base64 encoded value of compressed seen bits. Automatically decoded by Retrofit. */
+        val value: ByteArray,
     )
 
     /**
